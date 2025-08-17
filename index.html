@@ -3,82 +3,156 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Outil IA - Trouve ton vol</title>
+  <title>Outil IA - Votre copilote de vol</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f4f8;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
     }
-
-    h1 {
-      color: #1a73e8;
-      text-align: center;
+    #video-bg {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      z-index: -1;
+      transform: translateX(-50%) translateY(-50%);
+      background-size: cover;
+      filter: blur(3px) brightness(0.7);
     }
-
-    p {
-      text-align: center;
-      margin-bottom: 20px;
-      font-size: 1.1em;
-      color: #333;
+    .glass-container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      width: 300px;
+    .fade-in {
+      animation: fadeInAnimation 1s ease-in-out forwards;
     }
-
-    input[type="text"], input[type="date"] {
-      padding: 10px;
-      margin: 5px 0;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      font-size: 1em;
+    @keyframes fadeInAnimation {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
-
-    button {
-      padding: 10px;
-      margin-top: 10px;
-      border: none;
-      border-radius: 5px;
-      background-color: #1a73e8;
-      color: white;
-      font-size: 1em;
+    /* Animation pour la barre de recherche */
+    .search-box-animation {
+      animation: pulse-glow 3s infinite ease-in-out;
+    }
+    @keyframes pulse-glow {
+      0%, 100% {
+        box-shadow: 0 0 15px rgba(59, 130, 246, 0.3), 0 0 5px rgba(59, 130, 246, 0.2);
+      }
+      50% {
+        box-shadow: 0 0 30px rgba(59, 130, 246, 0.6), 0 0 10px rgba(59, 130, 246, 0.4);
+      }
+    }
+    .criteria-tag {
       cursor: pointer;
+      transition: all 0.2s ease-in-out;
     }
-
-    button:hover {
-      background-color: #155ab6;
-    }
-
-    #results {
-      margin-top: 20px;
-      width: 300px;
-      text-align: center;
-      background-color: white;
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    .criteria-tag:hover {
+      background-color: rgba(59, 130, 246, 0.5);
+      transform: translateY(-2px);
     }
   </style>
 </head>
-<body>
-  <h1>Trouve ton vol parfait ✈️</h1>
-  <p>Comment puis-je t’aider à trouver ton vol parfait ?</p>
+<body class="bg-gray-900 text-white">
 
-  <form id="searchForm">
-    <input type="text" id="query" placeholder="Ex: Paris → Bangkok, 10-17 août" required>
-    <button type="submit">Chercher</button>
-  </form>
+  <video autoplay muted loop id="video-bg">
+    <!-- Remplacez par une vidéo de votre choix. Pexels, Coverr sont de bonnes sources. -->
+    <source src="https://videos.pexels.com/video-files/2099484/2099484-hd_1920_1080_25fps.mp4" type="video/mp4">
+    Votre navigateur ne supporte pas les vidéos HTML5.
+  </video>
 
-  <div id="results"></div>
+  <div class="min-h-screen flex flex-col items-center justify-center p-4">
 
-  <script src="script.js"></script>
+    <div class="w-full max-w-3xl text-center fade-in">
+      <h1 class="text-4xl md:text-6xl font-bold mb-4">Votre copilote IA pour le vol parfait ✈️</h1>
+      <p class="text-lg md:text-xl text-gray-300 mb-8">
+        Plus qu'un simple comparateur. Décrivez votre besoin, notre IA trouve l'itinéraire idéal en termes de prix, de confort et de durée.
+      </p>
+    </div>
+
+    <div class="w-full max-w-2xl p-8 rounded-2xl glass-container fade-in search-box-animation" style="animation-delay: 0.2s;">
+      <form id="searchForm">
+        <div class="flex flex-col sm:flex-row items-center gap-4">
+          <div class="relative w-full">
+            <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            <input type="text" id="query" placeholder="Ex: Paris → Tokyo, 1 semaine en août, avec une seule escale" required class="w-full bg-gray-800 bg-opacity-50 text-white placeholder-gray-400 border border-gray-700 rounded-full py-3 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300">
+          </div>
+          <button type="submit" class="w-full sm:w-auto flex-shrink-0 bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 text-white font-semibold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105 shadow-lg">
+            Rechercher
+          </button>
+        </div>
+      </form>
+      <div class="mt-4 text-center text-sm text-gray-400">
+        <span>Essayez d'ajouter :</span>
+        <span class="criteria-tag ml-2 bg-gray-700 bg-opacity-50 px-3 py-1 rounded-full" data-value=" le moins cher">💸 Meilleur prix</span>
+        <span class="criteria-tag ml-2 bg-gray-700 bg-opacity-50 px-3 py-1 rounded-full" data-value=" avec le moins d'escales">✈️ Moins d'escales</span>
+        <span class="criteria-tag ml-2 bg-gray-700 bg-opacity-50 px-3 py-1 rounded-full" data-value=" le plus rapide">⚡️ Voyage rapide</span>
+      </div>
+    </div>
+
+    <div id="results" class="w-full max-w-2xl mt-8 text-center fade-in" style="animation-delay: 0.4s;">
+        <!-- Les résultats de la recherche s'afficheront ici -->
+    </div>
+
+  </div>
+
+  <script>
+    // Ajout de l'interactivité pour les tags de critères
+    document.querySelectorAll('.criteria-tag').forEach(tag => {
+      tag.addEventListener('click', () => {
+        const queryInput = document.getElementById('query');
+        const currentValue = queryInput.value.trim();
+        const tagValue = tag.dataset.value;
+        
+        // Ajoute la valeur du tag à la recherche
+        if (!currentValue.includes(tagValue)) {
+            queryInput.value = currentValue ? `${currentValue},${tagValue}` : tagValue.trim();
+        }
+        queryInput.focus();
+      });
+    });
+
+    // Le script pour gérer la soumission du formulaire reste le même
+    document.getElementById('searchForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const query = document.getElementById('query').value;
+      const resultsDiv = document.getElementById('results');
+      
+      resultsDiv.innerHTML = `
+        <div class="p-6 rounded-2xl glass-container">
+          <h3 class="text-xl font-semibold mb-2">Analyse en cours...</h3>
+          <p class="text-gray-300">Notre IA recherche le vol parfait pour "${query}"</p>
+        </div>
+      `;
+
+      setTimeout(() => {
+         resultsDiv.innerHTML = `
+            <div class="p-6 rounded-2xl glass-container text-left">
+              <h3 class="text-xl font-semibold mb-4">✈️ Vol idéal trouvé pour "${query}"</h3>
+              <div class="border-t border-gray-700 pt-4">
+                <p class="font-semibold text-blue-400">Meilleure option :</p>
+                <p>Air France - 780€ A/R</p>
+                <p class="text-sm text-gray-400">Départ: 10/08/2025, Retour: 17/08/2025 - 1 escale courte</p>
+              </div>
+            </div>
+      `;
+      }, 2000);
+    });
+  </script>
+
 </body>
 </html>
