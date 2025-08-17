@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mon outil IA - Recherche de vols</title>
+</head>
+<body>
+  <h1>Recherche ton vol</h1>
+  <form id="searchForm">
+    <label>Départ :</label>
+    <input type="text" id="origin" placeholder="CDG" required><br>
+    
+    <label>Destination :</label>
+    <input type="text" id="destination" placeholder="BKK" required><br>
+    
+    <label>Date départ :</label>
+    <input type="date" id="departure" required><br>
+    
+    <button type="submit">Chercher</button>
+  </form>
+
+  <div id="results"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
